@@ -30,6 +30,7 @@ public class API extends HttpServlet {
 		String album = request.getParameter("album");
 		String song = request.getParameter("song");
         String hash = request.getParameter("hash");
+        String lhash = request.getParameter("lhash"); // lyrics hash
         
         int status_code = 404;
         
