@@ -26,4 +26,3 @@ https://github.com/t0mm/ChordDetector http://habrahabr.ru/post/193514/
 http://supermegaultragroovy.com/products/capo/
 * Дополнительные ресурсы
 http://www.px-pict.com/7/3/2.html
-* Инструменты коллективной разработки
