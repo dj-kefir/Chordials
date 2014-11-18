@@ -51,6 +51,3 @@ CLOCK: [2014-11-16 Sun 17:48]--[2014-11-17 Mon 11:34] => 17:46
 | 21 | Alternative        |
 | 22 | Electropop & Disco |
 |----+--------------------|
-
-* TODO Создать кнопку рядом с каждой аудиозаписью ВК, передающую параметры VK API в CH API
-<div class="play_btn_wrap"><div class="play_new" id="play16908835_322962989"></div></div>
