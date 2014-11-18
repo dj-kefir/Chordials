@@ -1,6 +1,6 @@
 * STARTED Research
 - State "STARTED"    from "WAITING"    [2014-11-16 Sun 17:48]
-CLOCK: [2014-11-16 Sun 17:48]
+CLOCK: [2014-11-16 Sun 17:48]--[2014-11-17 Mon 11:34] => 17:46
 - State "WAITING"    from "WAITING"    [2014-11-14 Fri 12:20]
   Moved to evening
 
