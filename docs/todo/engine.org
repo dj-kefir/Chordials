@@ -1,22 +1,64 @@
 * Движок / Engine (Java)
-** TODO Сделать обработку простейших GET-запросов
-|-------------+---------------+------------------------------+----------|
-| Parameter   | Type          | Description                  | Required |
-|-------------+---------------+------------------------------+----------|
-| artist      | varchar (255) | Название исполнителя         |        1 |
-| title       | varchar (255) | Название композиции          |        1 |
-| vk_audio_id | int (11)      | Идентификатор аудиозаписи ВК |        0 |
-| lyrics_hash | varchar (255) | Хэш текста аудиозаписи (md5) |        0 |
-| mp3_hash    | varchar (255) | Хэш аудиозаписи              |        0 |
-|-------------+---------------+------------------------------+----------|
+** TODO Создать базу данных и сделать простейший поиск по ней
+|-------------+---------------+------------------------------------------+----------|
+| Parameter   | Type          | Description                              | Required |
+|-------------+---------------+------------------------------------------+----------|
+| artist_name | varchar (255) | Название исполнителя                     |        1 |
+| song_title  | varchar (255) | Название композиции                      |        1 |
+| vk_audio_id | int (11)      | Идентификатор аудиозаписи ВК (из VK.API) |        0 |
+| hash        | varchar (255) | Хэш текста аудиозаписи                   |        0 |
+|-------------+---------------+------------------------------------------+----------|
 *** База данных
+CREATE DATABASE `chordials`;
 
-*** Тест-кейсы
-Artist = Краснознамённая дивизия имени моей бабушки
-Title = Армия Ларисы
+CREATE TABLE `artists` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID артиста',
+  `name` varchar(255) DEFAULT NULL COMMENT 'Наименование артиста',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Список исполнителей песен';
 
-Artist = Краснознамённая дивизия имени моей бабушки
-Title = Little Joan
+CREATE TABLE `songs` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID песни',
+  `title` varchar(255) DEFAULT NULL COMMENT 'Название песни',
+  `artist_id` int(11) unsigned DEFAULT NULL COMMENT 'Артист',
+  PRIMARY KEY (`id`),
+  KEY `artist_id` (`artist_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Список песен';
 
-Artist = Краснознамённая дивизия имени моей бабушки
-Title = Нора
+CREATE TABLE `formats` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID формата',
+  `extension` varchar(10) DEFAULT NULL COMMENT 'Наименование формата',
+  `description` varchar(255) DEFAULT NULL COMMENT 'Описание формата',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Допустимые форматы материалов песен (guitar pro, tiff/png/jpg-ноты, musicxml, и т. д.)';
+
+INSERT INTO
+  formats (extension, description)
+VALUES
+  ('txt', 'Simple text file'),
+  ('gp', 'Guitar Pro file'),
+  ('xml', 'MusicXML'),
+  ('tiff', 'Tiff piano sheet'),
+  ('mp3', 'MPEG-1 or MPEG-2 Audio Layer III');
+
+CREATE TABLE `sources` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID ресурса песни',
+  `song_id` int(11) unsigned NOT NULL COMMENT 'Песня',
+  `format_id` int(1) NOT NULL DEFAULT '1' COMMENT 'Формат',
+  `file_name` varchar(255) NOT NULL DEFAULT '' COMMENT 'Путь к файлу на сервере',
+  `description` varchar(255) DEFAULT NULL COMMENT 'Примечания',
+  `hash` varchar(50) DEFAULT NULL COMMENT 'Хэш файла',
+  PRIMARY KEY (`id`),
+  KEY `song_id` (`song_id`),
+  KEY `format_id` (`format_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Материалы песен';
+
+CREATE TABLE `vk_audio` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Идентификатор аудиозаписи ВК',
+  `song_id` int(11) unsigned DEFAULT NULL COMMENT 'Идентификатор песни chordials',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Связь наших аудиозаписей с аудиозаписями ВК';
+*** Поиск песни
+- Начинаем искать песню по vk_audio.id
+- Не нашёл? Ищем по artists.name, дальше — songs.artist_id and songs.title
