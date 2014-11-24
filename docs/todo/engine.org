@@ -11,6 +11,8 @@
 *** База данных
 CREATE DATABASE `chordials`;
 
+USE `chordials`;
+
 CREATE TABLE `artists` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID артиста',
   `name` varchar(255) DEFAULT NULL COMMENT 'Наименование артиста',
