@@ -1,0 +1,119 @@
+% Created 2014-11-30 Sun 04:09
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\tolerance=1000
+\usepackage[T2A]{fontenc}
+\usepackage[margin=1.5cm]{geometry}
+\usepackage[russian, english]{babel}
+\usepackage{longtable}
+\usepackage[protrusion=true,expansion]{microtype}
+\usepackage{tabu}
+\usepackage{booktabs}
+\tabulinesep=3.5pt
+\author{Дмитрий Акатов}
+\date{\today}
+\title{Тудушка для двигателя Chordials}
+\hypersetup{
+  pdfkeywords={},
+  pdfsubject={},
+  pdfcreator={Emacs 24.4.1 (Org mode 8.2.10)}}
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+
+\section{Движок / Engine (Java)}
+\label{sec-1}
+\subsection{Создать базу данных и сделать простейший поиск по ней}
+\label{sec-1-1}
+\begin{longtabu} to \textwidth {X[0.5l]X[0.4l]X[0.3l]X[0.6r]}
+\hline
+Parameter & Type & Description & Required\\
+\hline
+\endhead
+\hline\multicolumn{4}{r}{Continued on next page} \\
+\endfoot
+\endlastfoot
+artist$_{\text{name}}$ & varchar (255) & Название исполнителя & 1\\
+song$_{\text{title}}$ & varchar (255) & Название композиции & 1\\
+vk$_{\text{audio}}$$_{\text{id}}$ & int (11) & Идентификатор аудиозаписи ВК (из VK.API) & 0\\
+hash & varchar (255) & Хэш текста аудиозаписи & 0\\
+\hline
+\end{longtabu}
+\subsubsection{База данных}
+\label{sec-1-1-1}
+CREATE DATABASE `chordials`;
+
+USE `chordials`;
+
+CREATE TABLE `artists` (
+  `id` int(11) unsigned NOT NULL AUTO$_{\text{INCREMENT}}$ COMMENT 'ID артиста',
+  `name` varchar(255) DEFAULT NULL COMMENT 'Наименование артиста',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Список исполнителей песен';
+
+CREATE TABLE `songs` (
+  `id` int(11) unsigned NOT NULL AUTO$_{\text{INCREMENT}}$ COMMENT 'ID песни',
+  `title` varchar(255) DEFAULT NULL COMMENT 'Название песни',
+  `artist$_{\text{id`}}$ int(11) unsigned DEFAULT NULL COMMENT 'Артист',
+  PRIMARY KEY (`id`),
+  KEY `artist$_{\text{id`}}$ (`artist$_{\text{id`}}$)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Список песен';
+
+CREATE TABLE `formats` (
+`id` int(11) unsigned NOT NULL AUTO$_{\text{INCREMENT}}$ COMMENT 'ID формата',
+  `extension` varchar(10) DEFAULT NULL COMMENT 'Наименование формата',
+  `description` varchar(255) DEFAULT NULL COMMENT 'Описание формата',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Допустимые форматы материалов песен (guitar pro, tiff/png/jpg-ноты, musicxml, и т. д.)';
+
+INSERT INTO
+  formats (extension, description)
+VALUES
+  ('txt', 'Simple text file'),
+  ('gp', 'Guitar Pro file'),
+  ('xml', 'MusicXML'),
+  ('tiff', 'Tiff piano sheet'),
+  ('mp3', 'MPEG-1 or MPEG-2 Audio Layer III');
+
+CREATE TABLE `sources` (
+  `id` int(11) unsigned NOT NULL AUTO$_{\text{INCREMENT}}$ COMMENT 'ID ресурса песни',
+  `song$_{\text{id`}}$ int(11) unsigned NOT NULL COMMENT 'Песня',
+  `format$_{\text{id`}}$ int(1) NOT NULL DEFAULT '1' COMMENT 'Формат',
+  `file$_{\text{name`}}$ varchar(255) NOT NULL DEFAULT '' COMMENT 'Путь к файлу на сервере',
+  `description` varchar(255) DEFAULT NULL COMMENT 'Примечания',
+  `hash` varchar(50) DEFAULT NULL COMMENT 'Хэш файла',
+  PRIMARY KEY (`id`),
+  KEY `song$_{\text{id`}}$ (`song$_{\text{id`}}$),
+  KEY `format$_{\text{id`}}$ (`format$_{\text{id`}}$)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Материалы песен';
+
+CREATE TABLE `vk$_{\text{audio`}}$ (
+  `id` int(11) unsigned NOT NULL AUTO$_{\text{INCREMENT}}$ COMMENT 'Идентификатор аудиозаписи ВК',
+  `song$_{\text{id`}}$ int(11) unsigned DEFAULT NULL COMMENT 'Идентификатор песни chordials',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Связь наших аудиозаписей с аудиозаписями ВК';
+\subsubsection{Поиск песни}
+\label{sec-1-1-2}
+\begin{itemize}
+\item Начинаем искать песню по vk$_{\text{audio}}$.id
+\item Не нашёл? Ищем по artists.name, дальше — songs.artist$_{\text{id}}$ and songs.title
+\end{itemize}
+% Emacs 24.4.1 (Org mode 8.2.10)
+\end{document}

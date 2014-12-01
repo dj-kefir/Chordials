@@ -1,5 +1,22 @@
+#+TITLE:     Тудушка для двигателя Chordials
+#+AUTHOR:    Дмитрий Акатов
+#+EMAIL:     akatovda@yandex.com
+#+LATEX_CLASS: article
+#+LATEX_HEADER: \usepackage[T2A]{fontenc}
+#+LATEX_HEADER: \usepackage[margin=1.5cm]{geometry}
+#+LATEX_HEADER: \usepackage[russian,english]{babel}
+#+LATEX_HEADER: \usepackage{longtable}
+#+LATEX_HEADER: \usepackage[protrusion=true,expansion]{microtype}
+#+LATEX_HEADER: \usepackage{tabu}
+#+LATEX_HEADER: \usepackage{booktabs}
+#+LATEX_HEADER: \tabulinesep=3.5pt
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+STARTUP: showall
+
 * Движок / Engine (Java)
-** TODO Создать базу данных и сделать простейший поиск по ней
+** Создать базу данных и сделать простейший поиск по ней
+#+ATTR_LATEX: :environment longtabu :width \textwidth :align X[0.5l]X[0.4l]X[0.3l]X[0.6r]
 |-------------+---------------+------------------------------------------+----------|
 | Parameter   | Type          | Description                              | Required |
 |-------------+---------------+------------------------------------------+----------|
@@ -29,7 +46,7 @@ CREATE TABLE `songs` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Список песен';
 
 CREATE TABLE `formats` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID формата',
+`id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID формата',
   `extension` varchar(10) DEFAULT NULL COMMENT 'Наименование формата',
   `description` varchar(255) DEFAULT NULL COMMENT 'Описание формата',
   PRIMARY KEY (`id`)
