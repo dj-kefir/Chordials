@@ -1,0 +1,3 @@
+[submodule "my"]
+	path = my
+	url = ssh://547500f54382ec14aa00009b@my-chordials.rhcloud.com/~/git/my.git
